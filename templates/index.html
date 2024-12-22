@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection with YOLOv8</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+        .image-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>YOLOv8 Object Detection</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="image">Upload an Image:</label><br><br>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+        <button type="submit">Detect Objects</button>
+    </form>
+
+    <div class="image-container">
+        <h3>Uploaded Image:</h3>
+        <img id="uploadedImage" alt="Uploaded Image" style="display: none;">
+    </div>
+
+    <div id="output" class="result-container">
+        <h3>Results:</h3>
+        <pre id="resultJson"></pre>
+        <h3>Detected Objects:</h3>
+        <img id="processedImage" alt="Processed Image" style="display: none;">
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            const imageInput = document.getElementById('image');
+            const uploadedImage = document.getElementById('uploadedImage');
+            const processedImage = document.getElementById('processedImage');
+            const resultJson = document.getElementById('resultJson');
+
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+
+            try {
+                const response = await fetch('/detect', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                resultJson.textContent = JSON.stringify(data.metadata, null, 2);
+
+                // Update processed image
+                processedImage.src = data.processed_image_url; // Assume the backend returns a URL to the processed image
+                processedImage.style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                resultJson.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
