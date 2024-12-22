@@ -25,8 +25,10 @@ docker run -p 5000:5000 yolov8-app
 The application will be running on http://localhost:5000.
 
 **4. Docker Commands**
+
 To stop the container, use:
 docker stop <container_id>
+
 To remove the container:
 docker rm <container_id>
 
