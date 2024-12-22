@@ -35,6 +35,7 @@ docker rm <container_id>
 **5. Example Image**
 
 ![Example Image](/uploads/Ex1.png)
+![Example Image](/uploads/Ex2.png)
 
 
 
