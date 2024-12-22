@@ -32,6 +32,9 @@ docker stop <container_id>
 To remove the container:
 docker rm <container_id>
 
+**5. Example Image**
+
+![Example Image](uploads/Screenshot 2024-12-22 124442.png)
 
 
 
