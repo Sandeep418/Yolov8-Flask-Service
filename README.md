@@ -34,7 +34,7 @@ docker rm <container_id>
 
 **5. Example Image**
 
-![Example Image](uploads/Screenshot 2024-12-22 124442.png)
+![Example Image](../upload/example_image.jpg)
 
 
 
